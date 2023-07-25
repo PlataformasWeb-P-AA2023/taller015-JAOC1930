@@ -24,6 +24,7 @@ for index, row in propietarios.iterrows():
 
 
 edificios = pd.read_csv('data/edificios.csv', delimiter='|')
+print(edificios)
 
 for index, row in edificios.iterrows():
     nombre = row['nombre']
@@ -44,3 +45,59 @@ for index, row in edificios.iterrows():
         print(f"Edificio '{nombre}' creado exitosamente.")
     else:
         print(f"Error al crear el propietario '{nombre} {apellido}'. Error {r.status_code}: {r.text}")
+
+
+departamentos = pd.read_csv('data/departamentos.csv', delimiter='|')
+print(departamentos)
+
+def obtener_id_propietario(cedula_propietario):
+    url = f'http://127.0.0.1:8000/propietarios/?cedula={cedula_propietario}'
+    r = requests.get(url, auth=('jaoc', 'UTPLUTPL'))
+    print(r)
+    if r.status_code == 200:
+        propietarios = r.json()
+        if propietarios:
+            return propietarios[0]['id'] 
+    return None
+
+def obtener_id_edificio(nombre_edificio):
+    url = f'http://127.0.0.1:8000/edificios/?nombre={nombre_edificio}'
+    r = requests.get(url, auth=('jaoc', 'UTPLUTPL'))
+    if r.status_code == 200:
+        edificios = r.json()
+        if edificios:
+            return edificios[0]['id'] 
+    return None
+
+for index, row in departamentos.iterrows():
+    cedula_propietario = row['Propietario']
+    costo = row['Costo']
+    num_cuartos = row['Cuartos']
+    nombre_edificio = row['Edificio']
+
+    propietario_id = obtener_id_propietario(cedula_propietario)
+    print(propietario_id)
+    edificio_id = obtener_id_edificio(nombre_edificio)
+    print(edificio_id)
+
+    if propietario_id is None:
+        print(f"El propietario con cédula '{cedula_propietario}' no existe en la base de datos.")
+        continue
+
+    if edificio_id is None:
+        print(f"El edificio '{nombre_edificio}' no existe en la base de datos.")
+        continue
+
+    data = {
+        'propietario': propietario_id,
+        'costo': costo,
+        'num_cuartos': num_cuartos,
+        'edificio': edificio_id
+    }
+
+    r = requests.post('http://127.0.0.1:8000/departamentos/', data=data, auth=('jaoc', 'UTPLUTPL'))
+
+    if r.status_code == 201:
+        print(f"Departamento del propietario con cédula '{cedula_propietario}' creado exitosamente.")
+    else:
+        print(f"Error al crear el departamento del propietario con cédula '{cedula_propietario}'. Error {r.status_code}: {r.text}")

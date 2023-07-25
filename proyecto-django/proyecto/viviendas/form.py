@@ -17,6 +17,6 @@ class EdificioForm(ModelForm):
 class DeparatmentoForm(ModelForm):
     class Meta:
         model = Departamento
-        fields = ['propietario','nombrePropietario', 'costo', 'num_cuartos', 'edificio']
+        fields = ['propietario', 'costo', 'num_cuartos', 'edificio']
         
         

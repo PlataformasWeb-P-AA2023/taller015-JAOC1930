@@ -5,23 +5,23 @@ from django.contrib import admin
 from viviendas.models import *
 
 class PropietarioAdmin(admin.ModelAdmin):
-    list_display = ('nombre', 'apellido', 'cedula')
-    search_fields = ('nombre', 'apellido', 'cedula')
+    list_display = ('id','nombre', 'apellido', 'cedula')
+    search_fields = ('id','nombre', 'apellido', 'cedula')
 
 admin.site.register(Propietario, PropietarioAdmin)
 
 class EdificioAdmin(admin.ModelAdmin):
 
-    list_display = ('nombre', 'direccion', 'ciudad', 'tipo')
-    search_fields = ('nombre', 'direccion')
+    list_display = ('id','nombre', 'direccion', 'ciudad', 'tipo')
+    search_fields = ('id','nombre', 'direccion')
 
 admin.site.register(Edificio, EdificioAdmin)
 
 
 class DepartamentoAdmin(admin.ModelAdmin):
 
-    list_display = ('propietario','nombrePropietario', 'costo', 'num_cuartos', 'edificio')
+    list_display = ('id','propietario', 'costo', 'num_cuartos', 'edificio')
 
-    raw_id_fields = ('propietario','edificio')
+    search_fields = ('id','propietario','edificio')
 
 admin.site.register(Departamento, DepartamentoAdmin)

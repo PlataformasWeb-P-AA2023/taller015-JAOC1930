@@ -5,6 +5,8 @@ class Propietario(models.Model):
     nombre = models.CharField(max_length=30)
     apellido = models.CharField(max_length=30)
     cedula = models.IntegerField()
+    def _str_(self):
+        return "%s" % (self.nombre)
 
 class Edificio(models.Model):
     opciones_tipo_Edificio= (
@@ -12,7 +14,6 @@ class Edificio(models.Model):
         ('Público', 'Público'),
         ('Negocio', 'Negocio'),
     )
-
 
     nombre = models.CharField(max_length=30)
     direccion = models.CharField(max_length=30)
@@ -26,27 +27,16 @@ class Edificio(models.Model):
                 self.ciudad,
                 self.tipo)
     
-    def obtener_cuartos(self):
-        valor = [t.num_cuartos for t in self.Departamentos.all()]
-        valor = sum(valor)
-        return valor
-    
-    def obtener_costosD(self):
-        valor = [t.costo for t in self.Departamentos.all()]
-        valor = sum(valor)
-        return valor
-    
     
 class Departamento(models.Model):
     propietario = models.ForeignKey(Propietario, on_delete=models.CASCADE, related_name='propietarios')
-    nombrePropietario = models.CharField(max_length=30)
     costo = models.FloatField()
     num_cuartos = models.IntegerField()
     edificio = models.ForeignKey(Edificio, on_delete=models.CASCADE,
             related_name="Departamentos")
 
     def _str_(self):
-        return "%s %s %d %s" % (self.nombrePropietario,
+        return "%s %s %d %s" % (self.propietario,
                 self.costo,
                 self.num_cuartos,
                 self.edificio)
