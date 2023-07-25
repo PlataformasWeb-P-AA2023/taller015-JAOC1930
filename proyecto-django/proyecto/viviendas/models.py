@@ -5,8 +5,8 @@ class Propietario(models.Model):
     nombre = models.CharField(max_length=30)
     apellido = models.CharField(max_length=30)
     cedula = models.IntegerField()
-    def __str___(self):
-        return "%s" % (self.nombre)
+    def __str__(self):
+        return "%s id: %d" % (self.cedula, self.id)
 
 class Edificio(models.Model):
     opciones_tipo_Edificio= (
