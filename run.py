@@ -56,8 +56,10 @@ def obtener_id_propietario(cedula_propietario):
     print(r)
     if r.status_code == 200:
         propietarios = r.json()
-        if propietarios:
-            return propietarios[0]['id'] 
+        print(propietarios)
+        for p in propietarios:
+            if p['cedula'] == cedula_propietario:
+                return p['id']
     return None
 
 def obtener_id_edificio(nombre_edificio):
@@ -65,8 +67,9 @@ def obtener_id_edificio(nombre_edificio):
     r = requests.get(url, auth=('jaoc', 'UTPLUTPL'))
     if r.status_code == 200:
         edificios = r.json()
-        if edificios:
-            return edificios[0]['id'] 
+        for e in edificios:
+            if e['nombre'] == nombre_edificio:
+                return e['id']
     return None
 
 for index, row in departamentos.iterrows():
