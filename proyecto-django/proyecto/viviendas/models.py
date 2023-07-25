@@ -5,7 +5,7 @@ class Propietario(models.Model):
     nombre = models.CharField(max_length=30)
     apellido = models.CharField(max_length=30)
     cedula = models.IntegerField()
-    def _str_(self):
+    def __str___(self):
         return "%s" % (self.nombre)
 
 class Edificio(models.Model):
@@ -21,7 +21,7 @@ class Edificio(models.Model):
     tipo = models.CharField(max_length=30, \
         choices = opciones_tipo_Edificio)
 
-    def _str_(self):
+    def __str__(self):
         return "%s %s %s %s" % (self.nombre,
                 self.direccion,
                 self.ciudad,
@@ -35,7 +35,7 @@ class Departamento(models.Model):
     edificio = models.ForeignKey(Edificio, on_delete=models.CASCADE,
             related_name="Departamentos")
 
-    def _str_(self):
+    def __str___(self):
         return "%s %s %d %s" % (self.propietario,
                 self.costo,
                 self.num_cuartos,
